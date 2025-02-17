@@ -5,11 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.security.PublicKey;
-
-import javax.naming.directory.InvalidAttributeIdentifierException;
 
 public class SendThread extends Thread{
+	
 	private Socket soc;
 	private String name;
 	
@@ -17,13 +15,14 @@ public class SendThread extends Thread{
 		this.soc = soc;
 		this.name = name;
 	}
-
 	@Override
 	public void run() {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		//키보드 입력을 소켓에 데이터로 전송사용
+		BufferedReader reader =
+				new BufferedReader(new InputStreamReader(System.in));
 		try {
 			PrintWriter writer = new PrintWriter(soc.getOutputStream());
-			// 닉네임 전송
+			//닉네임 전송
 			writer.println(name);
 			writer.flush();
 			while(true) {
@@ -32,25 +31,20 @@ public class SendThread extends Thread{
 				if(msg == null || msg.equals("")) {
 					break;
 				}
-				writer.println(name+":" + msg);
+				writer.println(name+":" +msg);
 				writer.flush();
 			}
-		} catch ( IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
-		}finally {
-			try {
-				
-			} catch ( Exception e) {
-				e.printStackTrace();
-			}finally {
+		} finally {
 				try {
 					if(soc != null) soc.close();
-				} catch (Exception e) {
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			}
 		}
-			
+		
 	}
 	
-
+	
 }

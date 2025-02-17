@@ -3,12 +3,13 @@ package ch16_network.chat;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 
 public class ReceiveThread extends Thread{
 	
 	private Socket soc;
-	
+
 	public ReceiveThread(Socket soc) {
 		this.soc = soc;
 	}
@@ -17,7 +18,9 @@ public class ReceiveThread extends Thread{
 	public void run() {
 		//전달 받은 내용을 콘솔에 출력
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(soc.getInputStream(), "UTF=8"));
+			BufferedReader reader =
+					new BufferedReader(
+							new InputStreamReader(soc.getInputStream(), "UTF-8"));
 			while(true) {
 				String msg = reader.readLine();
 				if(msg == null || msg.equals("")) {
@@ -27,14 +30,11 @@ public class ReceiveThread extends Thread{
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally {
-			try {
-				if(soc != null) soc.close();
-			} catch (Exception e) {
-			}
+		} finally {
+			try { if(soc != null) soc.close(); }catch (Exception e) {}
 		}
 	}
 	
 	
-
+	
 }

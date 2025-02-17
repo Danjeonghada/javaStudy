@@ -2,6 +2,7 @@ package ch16_network.chat;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class ChatClient {
@@ -15,7 +16,7 @@ public class ChatClient {
 		try {
 			Socket soc = new Socket("192.168.0.12", 5000);
 			System.out.println("접속! 성공!");
-			// 데이터 송수신
+			//데이터 송수신
 			SendThread send = new SendThread(soc, nm);
 			ReceiveThread receive = new ReceiveThread(soc);
 			send.start();
@@ -23,5 +24,7 @@ public class ChatClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
+
 }
